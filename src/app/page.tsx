@@ -21,6 +21,7 @@ export default function Page() {
 		handleTouchStart,
 		handleTouchMove,
 		handleTouchEnd,
+		handleContextMenu,
 		clearGrid,
 		exportAscii,
 		emptyChar,
@@ -83,6 +84,7 @@ export default function Page() {
 				onTouchStart={handleTouchStart}
 				onTouchMove={handleTouchMove}
 				onTouchEnd={handleTouchEnd}
+				onContextMenu={handleContextMenu}
 				gridRef={gridRef}
 			/>
 		</main>

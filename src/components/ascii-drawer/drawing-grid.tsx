@@ -5,13 +5,14 @@ type DrawingGridProps = {
 	grid: Cell[][]
 	emptyChar: string
 	drawMode: DrawMode
-	onMouseDown: (row: number, col: number) => void
+	onMouseDown: (row: number, col: number, event: React.MouseEvent) => void
 	onMouseEnter: (row: number, col: number) => void
 	onMouseUp: () => void
 	onMouseLeave: () => void
 	onTouchStart: (e: React.TouchEvent, row: number, col: number) => void
 	onTouchMove: (e: React.TouchEvent) => void
 	onTouchEnd: () => void
+	onContextMenu: (e: React.MouseEvent) => void
 	gridRef: RefObject<HTMLDivElement | null>
 }
 
@@ -26,6 +27,7 @@ export function DrawingGrid({
 	onTouchStart,
 	onTouchMove,
 	onTouchEnd,
+	onContextMenu,
 	gridRef
 }: DrawingGridProps) {
 	return (
@@ -38,6 +40,7 @@ export function DrawingGrid({
 			onTouchMove={onTouchMove}
 			onTouchEnd={onTouchEnd}
 			onTouchCancel={onTouchEnd}
+			onContextMenu={onContextMenu}
 		>
 			{grid.map((row) => (
 				<div key={`row-${row[0]?.id || "empty"}`} className="flex">
@@ -56,7 +59,7 @@ export function DrawingGrid({
 							} ${drawMode === "move" ? "cursor-move" : ""}`}
 							data-row={cell.row}
 							data-col={cell.col}
-							onMouseDown={() => onMouseDown(cell.row, cell.col)}
+							onMouseDown={(e) => onMouseDown(cell.row, cell.col, e)}
 							onMouseEnter={() => onMouseEnter(cell.row, cell.col)}
 							onTouchStart={(e) => onTouchStart(e, cell.row, cell.col)}
 						>

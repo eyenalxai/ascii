@@ -30,6 +30,7 @@ export const useDrawingInteraction = ({
 	gridCols
 }: UseDrawingInteractionProps) => {
 	const [isDrawing, setIsDrawing] = useState(false)
+	const [isRightClickErasing, setIsRightClickErasing] = useState(false)
 	const [hoveredCell, setHoveredCell] = useState<Point | null>(null)
 	const [moveStartPoint, setMoveStartPoint] = useState<Point | null>(null)
 	const [originalCells, setOriginalCells] = useState<Cell[] | null>(null)
@@ -58,17 +59,44 @@ export const useDrawingInteraction = ({
 	)
 
 	const toggleCell = useCallback(
-		(row: number, col: number) => {
+		(row: number, col: number, forceErase = false) => {
+			const effectiveDrawMode = forceErase ? "erase" : drawMode
 			updateCells((prev) =>
-				toggleCellInCells(prev, row, col, selectedChar, drawMode, brushSize)
+				toggleCellInCells(
+					prev,
+					row,
+					col,
+					selectedChar,
+					effectiveDrawMode,
+					brushSize
+				)
 			)
 		},
 		[updateCells, selectedChar, drawMode, brushSize]
 	)
 
-	const handleMouseDown = (row: number, col: number) => {
+	const handleContextMenu = (e: React.MouseEvent) => {
+		e.preventDefault()
+	}
+
+	const handleMouseDown = (
+		row: number,
+		col: number,
+		event: React.MouseEvent
+	) => {
+		if (event.button === 2) {
+			if (drawMode === "draw") {
+				captureHistory()
+				setIsDrawing(true)
+				setIsRightClickErasing(true)
+				toggleCell(row, col, true)
+			}
+			return
+		}
+
 		captureHistory()
 		setIsDrawing(true)
+		setIsRightClickErasing(false)
 		if (isShapeMode(drawMode)) {
 			startShape({ row, col })
 		} else if (drawMode === "move") {
@@ -90,7 +118,10 @@ export const useDrawingInteraction = ({
 			return
 		}
 
-		if (isShapeMode(drawMode)) {
+		if (isRightClickErasing) {
+			setHoveredCell({ row, col })
+			toggleCell(row, col, true)
+		} else if (isShapeMode(drawMode)) {
 			updateShapeEnd({ row, col })
 		} else if (drawMode === "move") {
 			if (moveStartPoint && originalCells) {
@@ -116,6 +147,7 @@ export const useDrawingInteraction = ({
 			setOriginalCells(null)
 		}
 		setIsDrawing(false)
+		setIsRightClickErasing(false)
 	}, [drawMode, finishShape])
 
 	const handleTouchStart = (e: React.TouchEvent, row: number, col: number) => {
@@ -175,7 +207,9 @@ export const useDrawingInteraction = ({
 			const cell = getCellFromMousePosition(e.clientX, e.clientY)
 			if (!cell) return
 
-			if (isShapeMode(drawMode)) {
+			if (isRightClickErasing) {
+				toggleCell(cell.row, cell.col, true)
+			} else if (isShapeMode(drawMode)) {
 				updateShapeEnd(cell)
 			} else if (drawMode === "move") {
 				if (moveStartPoint && originalCells) {
@@ -201,6 +235,7 @@ export const useDrawingInteraction = ({
 		}
 	}, [
 		isDrawing,
+		isRightClickErasing,
 		drawMode,
 		moveStartPoint,
 		originalCells,
@@ -221,6 +256,7 @@ export const useDrawingInteraction = ({
 		handleTouchStart,
 		handleTouchMove,
 		handleTouchEnd,
+		handleContextMenu,
 		gridRef
 	}
 }

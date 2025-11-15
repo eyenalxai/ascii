@@ -55,6 +55,7 @@ export const useAsciiDrawer = () => {
 		handleTouchStart,
 		handleTouchMove,
 		handleTouchEnd,
+		handleContextMenu,
 		gridRef
 	} = useDrawingInteraction({
 		updateCells,
@@ -137,6 +138,7 @@ export const useAsciiDrawer = () => {
 		handleTouchStart,
 		handleTouchMove,
 		handleTouchEnd,
+		handleContextMenu,
 		clearGrid,
 		exportAscii,
 		emptyChar: EMPTY_CHAR,
