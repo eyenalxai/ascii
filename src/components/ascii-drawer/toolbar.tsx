@@ -27,65 +27,71 @@ export function AsciiToolbar({
 	onCharChange
 }: ToolbarProps) {
 	return (
-		<Toolbar className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm rounded-xl">
-			<ToolbarGroup>
-				<ToolbarButton
-					render={
-						<Button
-							variant={drawMode === "draw" ? "default" : "outline"}
-							onClick={() => onDrawModeChange("draw")}
-						/>
-					}
-				>
-					<Pencil />
-				</ToolbarButton>
-				<ToolbarButton
-					render={
-						<Button
-							variant={drawMode === "erase" ? "default" : "outline"}
-							onClick={() => onDrawModeChange("erase")}
-						/>
-					}
-				>
-					<Eraser />
-				</ToolbarButton>
-				<ToolbarButton
-					render={
-						<Button
-							variant={drawMode === "ellipse" ? "default" : "outline"}
-							onClick={() => onDrawModeChange("ellipse")}
-						/>
-					}
-				>
-					<Circle />
-				</ToolbarButton>
-				<ToolbarButton
-					render={
-						<Button
-							variant={drawMode === "square" ? "default" : "outline"}
-							onClick={() => onDrawModeChange("square")}
-						/>
-					}
-				>
-					<Square />
-				</ToolbarButton>
-			</ToolbarGroup>
-			<ToolbarSeparator />
-			<ToolbarGroup>
-				<ToolbarButton render={<Button variant="outline" onClick={onClear} />}>
-					<Trash2 />
-				</ToolbarButton>
-				<ToolbarButton render={<Button variant="outline" onClick={onExport} />}>
-					<Copy />
-				</ToolbarButton>
-			</ToolbarGroup>
-			<ToolbarSeparator />
-			<ToolbarGroup>
-				<CharacterSelector
-					selectedChar={selectedChar}
-					onCharChange={onCharChange}
-				/>
-			</ToolbarGroup>
-		</Toolbar>
+		<div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 p-2 max-w-md w-fit rounded-xl">
+			<Toolbar>
+				<ToolbarGroup>
+					<ToolbarButton
+						render={
+							<Button
+								variant={drawMode === "draw" ? "default" : "outline"}
+								onClick={() => onDrawModeChange("draw")}
+							/>
+						}
+					>
+						<Pencil />
+					</ToolbarButton>
+					<ToolbarButton
+						render={
+							<Button
+								variant={drawMode === "erase" ? "default" : "outline"}
+								onClick={() => onDrawModeChange("erase")}
+							/>
+						}
+					>
+						<Eraser />
+					</ToolbarButton>
+					<ToolbarButton
+						render={
+							<Button
+								variant={drawMode === "ellipse" ? "default" : "outline"}
+								onClick={() => onDrawModeChange("ellipse")}
+							/>
+						}
+					>
+						<Circle />
+					</ToolbarButton>
+					<ToolbarButton
+						render={
+							<Button
+								variant={drawMode === "square" ? "default" : "outline"}
+								onClick={() => onDrawModeChange("square")}
+							/>
+						}
+					>
+						<Square />
+					</ToolbarButton>
+				</ToolbarGroup>
+				<ToolbarSeparator />
+				<ToolbarGroup>
+					<CharacterSelector
+						selectedChar={selectedChar}
+						onCharChange={onCharChange}
+					/>
+				</ToolbarGroup>
+				<ToolbarSeparator />
+				<ToolbarGroup>
+					<ToolbarButton
+						render={<Button variant="outline" onClick={onClear} />}
+					>
+						<Trash2 />
+					</ToolbarButton>
+					<ToolbarButton
+						render={<Button variant="outline" onClick={onExport} />}
+					>
+						<Copy />
+					</ToolbarButton>
+				</ToolbarGroup>
+			</Toolbar>
+		</div>
 	)
 }
