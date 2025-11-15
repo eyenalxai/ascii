@@ -136,7 +136,7 @@ export const useAsciiDrawer = () => {
 	const exportAscii = () => {
 		const ascii = gridToAscii(grid)
 
-		if (typeof navigator === "undefined" || !navigator.clipboard) {
+		if (typeof navigator === "undefined" || navigator.clipboard === undefined) {
 			toastManager.add({
 				title: "Clipboard API is not available",
 				description: "Clipboard API is not available",

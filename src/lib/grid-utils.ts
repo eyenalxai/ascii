@@ -85,7 +85,7 @@ export const createDisplayGrid = (
 		)
 		result[cell.row].push({
 			...cell,
-			char: isPreview ? previewChar : cell.char
+			char: isPreview === true ? previewChar : cell.char
 		})
 	}
 	return result
