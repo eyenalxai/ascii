@@ -93,6 +93,7 @@ export const useAsciiDrawer = () => {
 		if ((drawMode === "ellipse" || drawMode === "square") && shapeStart) {
 			setShapeEnd({ row, col })
 		} else if (drawMode !== "ellipse" && drawMode !== "square") {
+			setHoveredCell({ row, col })
 			toggleCell(row, col)
 		}
 	}
@@ -173,7 +174,9 @@ export const useAsciiDrawer = () => {
 
 	const displayGrid = useMemo(() => {
 		const hoverChar = drawMode === "erase" ? EMPTY_CHAR : selectedChar.char
-		const shouldShowHover = !isDrawing && hoveredCell
+		const shouldShowHover =
+			hoveredCell &&
+			!(isDrawing && (drawMode === "ellipse" || drawMode === "square"))
 
 		if (shapeStart && shapeEnd) {
 			const previewPoints = getShapePoints(
