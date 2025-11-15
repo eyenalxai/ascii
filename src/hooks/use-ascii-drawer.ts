@@ -19,11 +19,13 @@ export const useAsciiDrawer = () => {
 		setBrushSize
 	} = useDrawingTools()
 
+	const char = selectedChar.char
+
 	const { startShape, updateShapeEnd, finishShape, getShapePreviewPoints } =
 		useShapeDrawing({
 			updateCells,
 			drawMode,
-			char: selectedChar.char,
+			char,
 			brushSize
 		})
 
@@ -40,7 +42,7 @@ export const useAsciiDrawer = () => {
 	} = useDrawingInteraction({
 		updateCells,
 		drawMode,
-		selectedChar: selectedChar.char,
+		selectedChar: char,
 		brushSize,
 		startShape,
 		updateShapeEnd,
@@ -54,7 +56,7 @@ export const useAsciiDrawer = () => {
 		isDrawing,
 		shapePreviewPoints: getShapePreviewPoints(),
 		drawMode,
-		selectedChar: selectedChar.char,
+		selectedChar: char,
 		brushSize
 	})
 
@@ -74,16 +76,30 @@ export const useAsciiDrawer = () => {
 			return
 		}
 
-		ResultAsync.fromPromise(navigator.clipboard.writeText(ascii), (error) => {
-			const errorMessage =
-				error instanceof Error ? error.message : "Unknown error"
-			console.error(`Failed to copy to clipboard: ${errorMessage}`)
-			toastManager.add({
-				title: "Failed to copy to clipboard",
-				description: "Failed to copy to clipboard",
-				type: "error"
-			})
-		})
+		void ResultAsync.fromPromise(
+			navigator.clipboard.writeText(ascii),
+			(error) => {
+				const errorMessage =
+					error instanceof Error ? error.message : "Unknown error"
+				console.error(`Failed to copy to clipboard: ${errorMessage}`)
+				return new Error(errorMessage)
+			}
+		).match(
+			() => {
+				toastManager.add({
+					title: "Copied to clipboard",
+					description: "ASCII art copied successfully",
+					type: "success"
+				})
+			},
+			(error) => {
+				toastManager.add({
+					title: "Failed to copy to clipboard",
+					description: error.message,
+					type: "error"
+				})
+			}
+		)
 	}
 
 	return {

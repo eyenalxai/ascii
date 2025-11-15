@@ -82,10 +82,6 @@ export const applyShapeToCells = (
 	})
 }
 
-export const clearCells = (cells: Cell[]): Cell[] => {
-	return cells.map((cell) => ({ ...cell, char: EMPTY_CHAR }))
-}
-
 export const gridToAscii = (grid: Cell[][]): string => {
 	return grid.map((row) => row.map((cell) => cell.char).join("")).join("\n")
 }
