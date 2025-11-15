@@ -10,7 +10,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs"
 import { type AsciiChar, asciiCharacters } from "@/lib/ascii-characters"
-import { cn } from "@/lib/utils"
 
 type CharacterSelectorProps = {
 	selectedChar: AsciiChar
@@ -55,7 +54,7 @@ export function CharacterSelector({
 			<PopoverTrigger render={<Button variant="outline" />}>
 				{selectedChar.char}
 			</PopoverTrigger>
-			<PopoverContent className="flex items-center p-2" align="center">
+			<PopoverContent className="flex items-center p-0" align="center">
 				<Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
 					<TabsList className="w-full mx-auto">
 						<div className="flex overflow-x-auto">
@@ -70,20 +69,17 @@ export function CharacterSelector({
 						<ScrollArea className="h-[320px]">
 							<div className="grid grid-cols-6 gap-2">
 								{filteredCharacters.map((char) => (
-									<button
+									<Button
 										key={char.char}
 										type="button"
 										onClick={() => handleCharSelect(char)}
-										className={cn(
-											"aspect-square rounded-md border p-0.5 flex items-center justify-center font-mono text-xl",
-											selectedChar.char === char.char
-												? "bg-primary text-primary-foreground border-primary"
-												: "border-border bg-background"
-										)}
+										variant={
+											selectedChar.char === char.char ? "default" : "outline"
+										}
 										title={char.char}
 									>
 										{char.char}
-									</button>
+									</Button>
 								))}
 							</div>
 						</ScrollArea>
