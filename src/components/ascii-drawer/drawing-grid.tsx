@@ -42,7 +42,7 @@ export function DrawingGrid({
 						<button
 							key={cell.id}
 							type="button"
-							className={`h-5 w-2.5 md:h-8 md:w-4 border border-border transition-colors flex items-center justify-center font-mono ${
+							className={`h-5 w-2.5 text-md md:h-10 md:w-5 md:text-3xl overflow-hidden border border-border transition-colors flex items-center justify-center font-mono ${
 								cell.char === emptyChar
 									? "bg-background hover:bg-muted"
 									: "bg-background text-foreground"
