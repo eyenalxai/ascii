@@ -54,7 +54,9 @@ export const useDrawingInteraction = ({
 
 	const handleMouseEnter = (row: number, col: number) => {
 		if (!isDrawing) {
-			setHoveredCell({ row, col })
+			if (drawMode !== "move") {
+				setHoveredCell({ row, col })
+			}
 			return
 		}
 

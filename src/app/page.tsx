@@ -72,6 +72,7 @@ export default function Page() {
 			<DrawingGrid
 				grid={grid}
 				emptyChar={emptyChar}
+				drawMode={drawMode}
 				onMouseDown={handleMouseDown}
 				onMouseEnter={handleMouseEnter}
 				onMouseUp={handleMouseUp}
