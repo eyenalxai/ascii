@@ -41,6 +41,7 @@ export function AsciiToolbar({
 							<Button
 								variant={drawMode === "draw" ? "default" : "outline"}
 								onClick={() => onDrawModeChange("draw")}
+								className="w-13"
 							/>
 						}
 					>
@@ -51,6 +52,7 @@ export function AsciiToolbar({
 							<Button
 								variant={drawMode === "erase" ? "default" : "outline"}
 								onClick={() => onDrawModeChange("erase")}
+								className="w-13"
 							/>
 						}
 					>
@@ -61,6 +63,7 @@ export function AsciiToolbar({
 							<Button
 								variant={drawMode === "ellipse" ? "default" : "outline"}
 								onClick={() => onDrawModeChange("ellipse")}
+								className="w-13"
 							/>
 						}
 					>
@@ -71,6 +74,7 @@ export function AsciiToolbar({
 							<Button
 								variant={drawMode === "square" ? "default" : "outline"}
 								onClick={() => onDrawModeChange("square")}
+								className="w-13"
 							/>
 						}
 					>
@@ -94,12 +98,16 @@ export function AsciiToolbar({
 				<ToolbarSeparator />
 				<ToolbarGroup>
 					<ToolbarButton
-						render={<Button variant="outline" onClick={onClear} />}
+						render={
+							<Button variant="outline" onClick={onClear} className="w-13" />
+						}
 					>
 						<Trash2 />
 					</ToolbarButton>
 					<ToolbarButton
-						render={<Button variant="outline" onClick={onExport} />}
+						render={
+							<Button variant="outline" onClick={onExport} className="w-13" />
+						}
 					>
 						<Copy />
 					</ToolbarButton>
