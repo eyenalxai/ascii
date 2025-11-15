@@ -28,8 +28,8 @@ export function BrushSizeSelector({
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger render={<Button variant="outline" className="w-13" />}>
-				{brushSize}x{brushSize}
+			<PopoverTrigger render={<Button variant="outline" className="size-8" />}>
+				{brushSize}
 			</PopoverTrigger>
 			<PopoverContent className="w-fit" align="center">
 				<div className="flex flex-col gap-2">
@@ -40,7 +40,7 @@ export function BrushSizeSelector({
 							onClick={() => handleSizeSelect(size)}
 							variant={brushSize === size ? "default" : "outline"}
 						>
-							{size}x{size}
+							{size}
 						</Button>
 					))}
 				</div>

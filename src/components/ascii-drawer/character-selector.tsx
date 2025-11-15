@@ -51,7 +51,7 @@ export function CharacterSelector({
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger render={<Button variant="outline" className="w-13" />}>
+			<PopoverTrigger render={<Button variant="outline" className="size-8" />}>
 				{selectedChar.char}
 			</PopoverTrigger>
 			<PopoverContent className="flex items-center p-0" align="center">
