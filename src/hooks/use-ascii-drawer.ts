@@ -88,8 +88,8 @@ export const useAsciiDrawer = () => {
 			() => {
 				toastManager.add({
 					title: "Copied to clipboard",
-					description: "ASCII art copied successfully",
-					type: "success"
+					type: "success",
+					timeout: 2000
 				})
 			},
 			(error) => {
