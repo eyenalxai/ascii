@@ -27,7 +27,8 @@ export default function Page() {
 		undo,
 		redo,
 		canUndo,
-		canRedo
+		canRedo,
+		gridRef
 	} = useAsciiDrawer()
 
 	useEffect(() => {
@@ -80,6 +81,7 @@ export default function Page() {
 				onTouchStart={handleTouchStart}
 				onTouchMove={handleTouchMove}
 				onTouchEnd={handleTouchEnd}
+				gridRef={gridRef}
 			/>
 		</main>
 	)

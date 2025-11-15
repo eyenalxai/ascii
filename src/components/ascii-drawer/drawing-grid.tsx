@@ -1,3 +1,4 @@
+import type { RefObject } from "react"
 import type { Cell, DrawMode } from "@/lib/grid-utils"
 
 type DrawingGridProps = {
@@ -11,6 +12,7 @@ type DrawingGridProps = {
 	onTouchStart: (e: React.TouchEvent, row: number, col: number) => void
 	onTouchMove: (e: React.TouchEvent) => void
 	onTouchEnd: () => void
+	gridRef: RefObject<HTMLDivElement | null>
 }
 
 export function DrawingGrid({
@@ -23,19 +25,16 @@ export function DrawingGrid({
 	onMouseLeave,
 	onTouchStart,
 	onTouchMove,
-	onTouchEnd
+	onTouchEnd,
+	gridRef
 }: DrawingGridProps) {
-	const handleMouseLeave = () => {
-		onMouseUp()
-		onMouseLeave()
-	}
-
 	return (
 		<div
+			ref={gridRef}
 			role="application"
 			className={`inline-block select-none border-2 border-border rounded-lg overflow-x-auto max-w-full touch-none ${drawMode === "move" ? "cursor-move" : ""}`}
 			onMouseUp={onMouseUp}
-			onMouseLeave={handleMouseLeave}
+			onMouseLeave={onMouseLeave}
 			onTouchMove={onTouchMove}
 			onTouchEnd={onTouchEnd}
 			onTouchCancel={onTouchEnd}

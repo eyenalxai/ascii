@@ -5,7 +5,12 @@ import { useDrawingTools } from "@/hooks/use-drawing-tools"
 import { useGridDisplay } from "@/hooks/use-grid-display"
 import { useGridState } from "@/hooks/use-grid-state"
 import { useShapeDrawing } from "@/hooks/use-shape-drawing"
-import { EMPTY_CHAR, gridToAscii } from "@/lib/grid-utils"
+import {
+	EMPTY_CHAR,
+	GRID_HEIGHT,
+	GRID_WIDTH,
+	gridToAscii
+} from "@/lib/grid-utils"
 
 export const useAsciiDrawer = () => {
 	const {
@@ -48,7 +53,8 @@ export const useAsciiDrawer = () => {
 		handleMouseUp,
 		handleTouchStart,
 		handleTouchMove,
-		handleTouchEnd
+		handleTouchEnd,
+		gridRef
 	} = useDrawingInteraction({
 		updateCells,
 		drawMode,
@@ -57,7 +63,9 @@ export const useAsciiDrawer = () => {
 		startShape,
 		updateShapeEnd,
 		finishShape,
-		captureHistory
+		captureHistory,
+		gridRows: GRID_HEIGHT,
+		gridCols: GRID_WIDTH
 	})
 
 	const displayGrid = useGridDisplay({
@@ -134,6 +142,7 @@ export const useAsciiDrawer = () => {
 		undo,
 		redo,
 		canUndo,
-		canRedo
+		canRedo,
+		gridRef
 	}
 }
