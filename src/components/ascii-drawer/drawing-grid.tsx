@@ -52,7 +52,7 @@ export function DrawingGrid({
 								: cell.char === emptyChar
 									? `bg-background ${drawMode !== "move" ? "hover:bg-muted" : ""}`
 									: "bg-background text-foreground"
-						}`}
+						} ${drawMode === "move" ? "cursor-move" : ""}`}
 						data-row={cell.row}
 						data-col={cell.col}
 						onMouseDown={() => onMouseDown(cell.row, cell.col)}
