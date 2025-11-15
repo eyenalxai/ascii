@@ -17,6 +17,10 @@ type UseDrawingInteractionProps = {
 	gridCols: number
 }
 
+const handleContextMenu = (e: React.MouseEvent) => {
+	e.preventDefault()
+}
+
 export const useDrawingInteraction = ({
 	updateCells,
 	drawMode,
@@ -74,10 +78,6 @@ export const useDrawingInteraction = ({
 		},
 		[updateCells, selectedChar, drawMode, brushSize]
 	)
-
-	const handleContextMenu = (e: React.MouseEvent) => {
-		e.preventDefault()
-	}
 
 	const handleMouseDown = (
 		row: number,
