@@ -28,7 +28,9 @@ export const useGridDisplay = ({
 	const displayGrid = useMemo(() => {
 		const hoverChar = drawMode === "erase" ? EMPTY_CHAR : selectedChar
 		const shouldShowHover = Boolean(
-			hoveredCell && !(isDrawing && isShapeMode(drawMode)) && drawMode !== "move"
+			hoveredCell &&
+				!(isDrawing && isShapeMode(drawMode)) &&
+				drawMode !== "move"
 		)
 
 		if (shapePreviewPoints.length > 0) {
