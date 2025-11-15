@@ -45,6 +45,7 @@
 		"@types/node": "24.10.0",
 		"@types/react": "^19.2.2",
 		"@types/react-dom": "^19.2.1",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"oxlint": "^1.26.0",
 		"oxlint-tsgolint": "^0.5.1",
 		"postcss": "^8.5.6",
