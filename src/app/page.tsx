@@ -41,6 +41,9 @@ export default function Page() {
 			) {
 				e.preventDefault()
 				redo()
+			} else if ((e.ctrlKey || e.metaKey) && e.key === "c") {
+				e.preventDefault()
+				exportAscii()
 			}
 		}
 
@@ -48,7 +51,7 @@ export default function Page() {
 		return () => {
 			window.removeEventListener("keydown", handleKeyDown)
 		}
-	}, [undo, redo])
+	}, [undo, redo, exportAscii])
 
 	return (
 		<main className="container mx-auto max-w-2xl pt-24 flex justify-center">
