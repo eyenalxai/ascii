@@ -33,7 +33,7 @@ export function AsciiToolbar({
 	onBrushSizeChange
 }: ToolbarProps) {
 	return (
-		<div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 p-2 max-w-md w-fit rounded-xl">
+		<div className="fixed top-4 right-4 z-50 p-2 max-w-md w-fit rounded-xl">
 			<Toolbar>
 				<ToolbarGroup className="gap-2">
 					<ToolbarButton
