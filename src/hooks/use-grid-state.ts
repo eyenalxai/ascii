@@ -1,6 +1,11 @@
 import { useCallback, useMemo } from "react"
 import { useHistory } from "@/hooks/use-history"
-import { type Cell, cellsToGrid, createInitialCells } from "@/lib/grid-utils"
+import {
+	type Cell,
+	cellsToGrid,
+	createInitialCells,
+	EMPTY_CHAR
+} from "@/lib/grid-utils"
 
 export const useGridState = () => {
 	const {
@@ -14,6 +19,11 @@ export const useGridState = () => {
 	} = useHistory<Cell[]>(createInitialCells())
 
 	const grid = useMemo(() => cellsToGrid(cells), [cells])
+
+	const isGridEmpty = useMemo(
+		() => cells.every((cell) => cell.char === EMPTY_CHAR),
+		[cells]
+	)
 
 	const updateCells = useCallback(
 		(updater: (prevCells: Cell[]) => Cell[]) => {
@@ -42,6 +52,7 @@ export const useGridState = () => {
 	return {
 		cells,
 		grid,
+		isGridEmpty,
 		updateCells,
 		clearCells,
 		captureHistory,

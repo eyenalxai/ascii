@@ -37,6 +37,7 @@ type ToolbarProps = {
 	onRedo: () => void
 	canUndo: boolean
 	canRedo: boolean
+	isGridEmpty: boolean
 }
 
 export function AsciiToolbar({
@@ -51,7 +52,8 @@ export function AsciiToolbar({
 	onUndo,
 	onRedo,
 	canUndo,
-	canRedo
+	canRedo,
+	isGridEmpty
 }: ToolbarProps) {
 	return (
 		<Toolbar className="fixed top-4 right-4 z-50">
@@ -80,7 +82,12 @@ export function AsciiToolbar({
 				</ToolbarButton>
 				<ToolbarButton
 					render={
-						<Button variant="outline" onClick={onExport} className="size-8" />
+						<Button
+							variant="outline"
+							onClick={onExport}
+							disabled={isGridEmpty}
+							className="size-8"
+						/>
 					}
 				>
 					<Copy />

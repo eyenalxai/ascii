@@ -16,6 +16,7 @@ export const useAsciiDrawer = () => {
 	const {
 		cells,
 		grid,
+		isGridEmpty,
 		updateCells,
 		clearCells,
 		captureHistory,
@@ -139,6 +140,7 @@ export const useAsciiDrawer = () => {
 		clearGrid,
 		exportAscii,
 		emptyChar: EMPTY_CHAR,
+		isGridEmpty,
 		undo,
 		redo,
 		canUndo,

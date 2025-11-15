@@ -24,6 +24,7 @@ export default function Page() {
 		clearGrid,
 		exportAscii,
 		emptyChar,
+		isGridEmpty,
 		undo,
 		redo,
 		canUndo,
@@ -69,6 +70,7 @@ export default function Page() {
 				onRedo={redo}
 				canUndo={canUndo}
 				canRedo={canRedo}
+				isGridEmpty={isGridEmpty}
 			/>
 			<DrawingGrid
 				grid={grid}
