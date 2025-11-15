@@ -47,7 +47,7 @@ function PopoverPopup({
           <PopoverPrimitive.Popup
             data-slot="popover-content"
             className={cn(
-              "max-h-(--available-height) w-full overflow-y-auto p-2 outline-none",
+              "max-h-(--available-height) w-full overflow-y-auto p-1 outline-none",
               tooltipStyle &&
                 "px-[calc(--spacing(2)+1px)] py-[calc(--spacing(1)+1px)]"
             )}
