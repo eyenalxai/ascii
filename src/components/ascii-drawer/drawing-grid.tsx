@@ -29,7 +29,7 @@ export function DrawingGrid({
 	return (
 		<div
 			role="application"
-			className="inline-block select-none border-2 border-border overflow-x-auto max-w-full touch-none"
+			className="inline-block select-none border-2 border-border rounded-lg overflow-x-auto max-w-full touch-none"
 			onMouseUp={onMouseUp}
 			onMouseLeave={onMouseUp}
 			onTouchMove={onTouchMove}
@@ -42,7 +42,7 @@ export function DrawingGrid({
 						<button
 							key={cell.id}
 							type="button"
-							className={`h-5 w-2.5 text-md sm:h-7 sm:w-4 sm:text-xl lg:h-10 lg:w-5 lg:text-3xl overflow-hidden border-[0.5px] border-border transition-colors flex items-center justify-center font-mono ${
+							className={`h-5 w-2.5 text-md sm:h-7 sm:w-4 sm:text-xl lg:h-10 lg:w-5 lg:text-3xl overflow-hidden border border-border/30 transition-colors flex items-center justify-center font-mono ${
 								cell.char === emptyChar
 									? "bg-background hover:bg-muted"
 									: "bg-background text-foreground"
