@@ -23,7 +23,7 @@ export default function Page() {
 	} = useAsciiDrawer()
 
 	return (
-		<main className="container mx-auto pt-24 flex justify-center">
+		<main className="container mx-auto max-w-2xl pt-24 flex justify-center">
 			<AsciiToolbar
 				drawMode={drawMode}
 				onDrawModeChange={setDrawMode}
