@@ -119,7 +119,7 @@ export function AsciiToolbar({
 					<Settings />
 				</PopoverTrigger>
 				<PopoverPopup className="flex flex-col mt-1">
-					<div className="flex flex-col items-center gap-2 pb-2">
+					<div className="flex flex-col items-center gap-1 pb-2">
 						<Button
 							variant={drawMode === "move" ? "default" : "outline"}
 							onClick={() => onDrawModeChange("move")}
