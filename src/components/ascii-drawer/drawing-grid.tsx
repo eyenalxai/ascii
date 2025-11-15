@@ -47,7 +47,9 @@ export function DrawingGrid({
 							type="button"
 							className={`h-5 w-2.5 text-md sm:h-7 sm:w-4 sm:text-xl lg:h-10 lg:w-5 lg:text-3xl overflow-hidden border border-border/30 transition-colors flex items-center justify-center font-mono ${
 								cell.isHoverPreview === true
-									? "bg-muted/50 text-foreground/70"
+									? drawMode === "erase"
+										? "bg-destructive/20 text-destructive"
+										: "bg-muted text-foreground/70"
 									: cell.char === emptyChar
 										? `bg-background ${drawMode === "move" ? "" : "hover:bg-muted"}`
 										: "bg-background text-foreground"
