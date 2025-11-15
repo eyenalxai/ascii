@@ -3,6 +3,7 @@ type Cell = {
 	char: string
 	row: number
 	col: number
+	isHoverPreview?: boolean
 }
 
 type DrawingGridProps = {
@@ -11,6 +12,7 @@ type DrawingGridProps = {
 	onMouseDown: (row: number, col: number) => void
 	onMouseEnter: (row: number, col: number) => void
 	onMouseUp: () => void
+	onMouseLeave: () => void
 	onTouchStart: (e: React.TouchEvent, row: number, col: number) => void
 	onTouchMove: (e: React.TouchEvent) => void
 	onTouchEnd: () => void
@@ -22,16 +24,22 @@ export function DrawingGrid({
 	onMouseDown,
 	onMouseEnter,
 	onMouseUp,
+	onMouseLeave,
 	onTouchStart,
 	onTouchMove,
 	onTouchEnd
 }: DrawingGridProps) {
+	const handleMouseLeave = () => {
+		onMouseUp()
+		onMouseLeave()
+	}
+
 	return (
 		<div
 			role="application"
 			className="inline-block select-none border-2 border-border rounded-lg overflow-x-auto max-w-full touch-none"
 			onMouseUp={onMouseUp}
-			onMouseLeave={onMouseUp}
+			onMouseLeave={handleMouseLeave}
 			onTouchMove={onTouchMove}
 			onTouchEnd={onTouchEnd}
 			onTouchCancel={onTouchEnd}
@@ -43,9 +51,11 @@ export function DrawingGrid({
 							key={cell.id}
 							type="button"
 							className={`h-5 w-2.5 text-md sm:h-7 sm:w-4 sm:text-xl lg:h-10 lg:w-5 lg:text-3xl overflow-hidden border border-border/30 transition-colors flex items-center justify-center font-mono ${
-								cell.char === emptyChar
-									? "bg-background hover:bg-muted"
-									: "bg-background text-foreground"
+								cell.isHoverPreview
+									? "bg-muted/50 text-foreground/70"
+									: cell.char === emptyChar
+										? "bg-background hover:bg-muted"
+										: "bg-background text-foreground"
 							}`}
 							data-row={cell.row}
 							data-col={cell.col}

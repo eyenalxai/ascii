@@ -24,6 +24,10 @@ export const useAsciiDrawer = () => {
 		asciiCharacters[0]
 	)
 	const [brushSize, setBrushSize] = useState<number>(1)
+	const [hoveredCell, setHoveredCell] = useState<{
+		row: number
+		col: number
+	} | null>(null)
 	const [shapeStart, setShapeStart] = useState<{
 		row: number
 		col: number
@@ -81,13 +85,20 @@ export const useAsciiDrawer = () => {
 	}
 
 	const handleMouseEnter = (row: number, col: number) => {
-		if (!isDrawing) return
+		if (!isDrawing) {
+			setHoveredCell({ row, col })
+			return
+		}
 
 		if ((drawMode === "ellipse" || drawMode === "square") && shapeStart) {
 			setShapeEnd({ row, col })
 		} else if (drawMode !== "ellipse" && drawMode !== "square") {
 			toggleCell(row, col)
 		}
+	}
+
+	const handleMouseLeave = () => {
+		setHoveredCell(null)
 	}
 
 	const handleMouseUp = () => {
@@ -161,6 +172,9 @@ export const useAsciiDrawer = () => {
 	}
 
 	const displayGrid = useMemo(() => {
+		const hoverChar = drawMode === "erase" ? EMPTY_CHAR : selectedChar.char
+		const shouldShowHover = !isDrawing && hoveredCell
+
 		if (shapeStart && shapeEnd) {
 			const previewPoints = getShapePoints(
 				drawMode,
@@ -174,12 +188,36 @@ export const useAsciiDrawer = () => {
 					cells,
 					previewPoints,
 					selectedChar.char,
-					brushSize
+					brushSize,
+					shouldShowHover ? hoveredCell : null,
+					shouldShowHover ? hoverChar : null
 				)
 			}
 		}
+
+		if (shouldShowHover) {
+			return createDisplayGrid(
+				cells,
+				null,
+				selectedChar.char,
+				brushSize,
+				hoveredCell,
+				hoverChar
+			)
+		}
+
 		return grid
-	}, [grid, drawMode, shapeStart, shapeEnd, selectedChar, cells, brushSize])
+	}, [
+		grid,
+		drawMode,
+		shapeStart,
+		shapeEnd,
+		selectedChar,
+		cells,
+		brushSize,
+		isDrawing,
+		hoveredCell
+	])
 
 	return {
 		grid: displayGrid,
@@ -192,6 +230,7 @@ export const useAsciiDrawer = () => {
 		handleMouseDown,
 		handleMouseEnter,
 		handleMouseUp,
+		handleMouseLeave,
 		handleTouchStart,
 		handleTouchMove,
 		handleTouchEnd,

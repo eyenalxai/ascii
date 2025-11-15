@@ -6,6 +6,7 @@ export type Cell = {
 	char: string
 	row: number
 	col: number
+	isHoverPreview?: boolean
 }
 
 export type DrawMode = "draw" | "erase" | "ellipse" | "square"
@@ -91,7 +92,9 @@ export const createDisplayGrid = (
 	cells: Cell[],
 	previewPoints: Array<{ row: number; col: number }> | null,
 	previewChar: string,
-	brushSize: number
+	brushSize: number,
+	hoverCell: { row: number; col: number } | null = null,
+	hoverChar: string | null = null
 ): Cell[][] => {
 	const result: Cell[][] = Array.from({ length: GRID_HEIGHT }, () => [])
 
@@ -103,13 +106,32 @@ export const createDisplayGrid = (
 		}
 	}
 
+	const expandedHoverCells: Array<{ row: number; col: number }> = []
+	if (hoverCell && hoverChar !== null) {
+		const hoverBrushCells = getBrushCells(
+			hoverCell.row,
+			hoverCell.col,
+			brushSize
+		)
+		expandedHoverCells.push(...hoverBrushCells)
+	}
+
 	for (const cell of cells) {
 		const isPreview = expandedPreviewPoints.some(
 			(p) => p.row === cell.row && p.col === cell.col
 		)
+		const isHover = expandedHoverCells.some(
+			(p) => p.row === cell.row && p.col === cell.col
+		)
+
 		result[cell.row].push({
 			...cell,
-			char: isPreview === true ? previewChar : cell.char
+			char: isPreview
+				? previewChar
+				: isHover && hoverChar !== null
+					? hoverChar
+					: cell.char,
+			isHoverPreview: isHover && !isPreview
 		})
 	}
 	return result

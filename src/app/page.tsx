@@ -16,6 +16,7 @@ export default function Page() {
 		handleMouseDown,
 		handleMouseEnter,
 		handleMouseUp,
+		handleMouseLeave,
 		handleTouchStart,
 		handleTouchMove,
 		handleTouchEnd,
@@ -42,6 +43,7 @@ export default function Page() {
 				onMouseDown={handleMouseDown}
 				onMouseEnter={handleMouseEnter}
 				onMouseUp={handleMouseUp}
+				onMouseLeave={handleMouseLeave}
 				onTouchStart={handleTouchStart}
 				onTouchMove={handleTouchMove}
 				onTouchEnd={handleTouchEnd}
