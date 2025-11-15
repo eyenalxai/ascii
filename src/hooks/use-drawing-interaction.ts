@@ -12,6 +12,7 @@ type UseDrawingInteractionProps = {
 	startShape: (point: Point) => void
 	updateShapeEnd: (point: Point) => void
 	finishShape: () => void
+	captureHistory: () => void
 }
 
 export const useDrawingInteraction = ({
@@ -21,7 +22,8 @@ export const useDrawingInteraction = ({
 	brushSize,
 	startShape,
 	updateShapeEnd,
-	finishShape
+	finishShape,
+	captureHistory
 }: UseDrawingInteractionProps) => {
 	const [isDrawing, setIsDrawing] = useState(false)
 	const [hoveredCell, setHoveredCell] = useState<Point | null>(null)
@@ -33,6 +35,7 @@ export const useDrawingInteraction = ({
 	}
 
 	const handleMouseDown = (row: number, col: number) => {
+		captureHistory()
 		setIsDrawing(true)
 		if (isShapeMode(drawMode)) {
 			startShape({ row, col })
@@ -68,6 +71,7 @@ export const useDrawingInteraction = ({
 
 	const handleTouchStart = (e: React.TouchEvent, row: number, col: number) => {
 		e.preventDefault()
+		captureHistory()
 		setIsDrawing(true)
 		if (isShapeMode(drawMode)) {
 			startShape({ row, col })

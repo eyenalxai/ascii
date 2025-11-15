@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import { DrawingGrid } from "@/components/ascii-drawer/drawing-grid"
 import { AsciiToolbar } from "@/components/ascii-drawer/toolbar"
 import { useAsciiDrawer } from "@/hooks/use-ascii-drawer"
@@ -22,8 +23,32 @@ export default function Page() {
 		handleTouchEnd,
 		clearGrid,
 		exportAscii,
-		emptyChar
+		emptyChar,
+		undo,
+		redo,
+		canUndo,
+		canRedo
 	} = useAsciiDrawer()
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key === "z") {
+				e.preventDefault()
+				undo()
+			} else if (
+				((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "z") ||
+				((e.ctrlKey || e.metaKey) && e.key === "y")
+			) {
+				e.preventDefault()
+				redo()
+			}
+		}
+
+		window.addEventListener("keydown", handleKeyDown)
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown)
+		}
+	}, [undo, redo])
 
 	return (
 		<main className="container mx-auto max-w-2xl pt-24 flex justify-center">
@@ -36,6 +61,10 @@ export default function Page() {
 				onCharChange={setSelectedChar}
 				brushSize={brushSize}
 				onBrushSizeChange={setBrushSize}
+				onUndo={undo}
+				onRedo={redo}
+				canUndo={canUndo}
+				canRedo={canRedo}
 			/>
 			<DrawingGrid
 				grid={grid}

@@ -3,9 +3,11 @@ import {
 	Copy,
 	Eraser,
 	Pencil,
+	Redo,
 	Settings,
 	Square,
-	Trash2
+	Trash2,
+	Undo
 } from "lucide-react"
 import { BrushSizeSelector } from "@/components/ascii-drawer/brush-size-selector"
 import { CharacterSelector } from "@/components/ascii-drawer/character-selector"
@@ -30,6 +32,10 @@ type ToolbarProps = {
 	onCharChange: (char: AsciiChar) => void
 	brushSize: number
 	onBrushSizeChange: (size: number) => void
+	onUndo: () => void
+	onRedo: () => void
+	canUndo: boolean
+	canRedo: boolean
 }
 
 export function AsciiToolbar({
@@ -40,7 +46,11 @@ export function AsciiToolbar({
 	selectedChar,
 	onCharChange,
 	brushSize,
-	onBrushSizeChange
+	onBrushSizeChange,
+	onUndo,
+	onRedo,
+	canUndo,
+	canRedo
 }: ToolbarProps) {
 	return (
 		<Toolbar className="fixed top-4 right-4 z-50">
@@ -73,6 +83,33 @@ export function AsciiToolbar({
 					}
 				>
 					<Copy />
+				</ToolbarButton>
+			</ToolbarGroup>
+			<ToolbarSeparator orientation="vertical" />
+			<ToolbarGroup>
+				<ToolbarButton
+					render={
+						<Button
+							variant="outline"
+							onClick={onUndo}
+							disabled={!canUndo}
+							className="size-8"
+						/>
+					}
+				>
+					<Undo />
+				</ToolbarButton>
+				<ToolbarButton
+					render={
+						<Button
+							variant="outline"
+							onClick={onRedo}
+							disabled={!canRedo}
+							className="size-8"
+						/>
+					}
+				>
+					<Redo />
 				</ToolbarButton>
 			</ToolbarGroup>
 			<ToolbarSeparator orientation="vertical" />

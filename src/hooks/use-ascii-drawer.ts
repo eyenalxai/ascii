@@ -8,7 +8,17 @@ import { useShapeDrawing } from "@/hooks/use-shape-drawing"
 import { EMPTY_CHAR, gridToAscii } from "@/lib/grid-utils"
 
 export const useAsciiDrawer = () => {
-	const { cells, grid, updateCells, clearCells } = useGridState()
+	const {
+		cells,
+		grid,
+		updateCells,
+		clearCells,
+		captureHistory,
+		undo,
+		redo,
+		canUndo,
+		canRedo
+	} = useGridState()
 
 	const {
 		drawMode,
@@ -46,7 +56,8 @@ export const useAsciiDrawer = () => {
 		brushSize,
 		startShape,
 		updateShapeEnd,
-		finishShape
+		finishShape,
+		captureHistory
 	})
 
 	const displayGrid = useGridDisplay({
@@ -119,6 +130,10 @@ export const useAsciiDrawer = () => {
 		handleTouchEnd,
 		clearGrid,
 		exportAscii,
-		emptyChar: EMPTY_CHAR
+		emptyChar: EMPTY_CHAR,
+		undo,
+		redo,
+		canUndo,
+		canRedo
 	}
 }
