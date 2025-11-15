@@ -141,28 +141,20 @@ export const useDrawingInteraction = ({
 		e.preventDefault()
 
 		const touch = e.touches[0]
-		const element = document.elementFromPoint(touch.clientX, touch.clientY)
+		const cell = getCellFromMousePosition(touch.clientX, touch.clientY)
 
-		if (element instanceof HTMLButtonElement) {
-			const rowAttr = element.dataset.row
-			const colAttr = element.dataset.col
+		if (!cell) return
 
-			if (rowAttr !== undefined && colAttr !== undefined) {
-				const row = Number.parseInt(rowAttr, 10)
-				const col = Number.parseInt(colAttr, 10)
-
-				if (isShapeMode(drawMode)) {
-					updateShapeEnd({ row, col })
-				} else if (drawMode === "move") {
-					if (moveStartPoint && originalCells) {
-						const deltaRow = row - moveStartPoint.row
-						const deltaCol = col - moveStartPoint.col
-						updateCells(() => moveCells(originalCells, deltaRow, deltaCol))
-					}
-				} else {
-					toggleCell(row, col)
-				}
+		if (isShapeMode(drawMode)) {
+			updateShapeEnd(cell)
+		} else if (drawMode === "move") {
+			if (moveStartPoint && originalCells) {
+				const deltaRow = cell.row - moveStartPoint.row
+				const deltaCol = cell.col - moveStartPoint.col
+				updateCells(() => moveCells(originalCells, deltaRow, deltaCol))
 			}
+		} else {
+			toggleCell(cell.row, cell.col)
 		}
 	}
 
