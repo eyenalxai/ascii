@@ -174,9 +174,10 @@ export const useAsciiDrawer = () => {
 
 	const displayGrid = useMemo(() => {
 		const hoverChar = drawMode === "erase" ? EMPTY_CHAR : selectedChar.char
-		const shouldShowHover =
+		const shouldShowHover = Boolean(
 			hoveredCell &&
-			!(isDrawing && (drawMode === "ellipse" || drawMode === "square"))
+				!(isDrawing && (drawMode === "ellipse" || drawMode === "square"))
+		)
 
 		if (shapeStart && shapeEnd) {
 			const previewPoints = getShapePoints(
