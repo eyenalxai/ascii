@@ -57,6 +57,8 @@ export const asciiCharacters: AsciiChar[] = [
 	// Lines & Borders - Single
 	{ char: "─", category: "lines" },
 	{ char: "│", category: "lines" },
+	{ char: "╱", category: "lines" },
+	{ char: "╲", category: "lines" },
 	{ char: "┌", category: "lines" },
 	{ char: "┐", category: "lines" },
 	{ char: "└", category: "lines" },
