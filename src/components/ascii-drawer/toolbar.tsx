@@ -35,7 +35,7 @@ export function AsciiToolbar({
 	return (
 		<div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 p-2 max-w-md w-fit rounded-xl">
 			<Toolbar>
-				<ToolbarGroup>
+				<ToolbarGroup className="gap-2">
 					<ToolbarButton
 						render={
 							<Button
@@ -82,21 +82,21 @@ export function AsciiToolbar({
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarSeparator />
-				<ToolbarGroup>
+				<ToolbarGroup className="gap-2">
 					<BrushSizeSelector
 						brushSize={brushSize}
 						onBrushSizeChange={onBrushSizeChange}
 					/>
 				</ToolbarGroup>
 				<ToolbarSeparator />
-				<ToolbarGroup>
+				<ToolbarGroup className="gap-2">
 					<CharacterSelector
 						selectedChar={selectedChar}
 						onCharChange={onCharChange}
 					/>
 				</ToolbarGroup>
 				<ToolbarSeparator />
-				<ToolbarGroup>
+				<ToolbarGroup className="gap-2">
 					<ToolbarButton
 						render={
 							<Button variant="outline" onClick={onClear} className="w-13" />
