@@ -23,6 +23,7 @@ export const useAsciiDrawer = () => {
 	const [selectedChar, setSelectedChar] = useState<AsciiChar>(
 		asciiCharacters[0]
 	)
+	const [brushSize, setBrushSize] = useState<number>(1)
 	const [shapeStart, setShapeStart] = useState<{
 		row: number
 		col: number
@@ -36,7 +37,7 @@ export const useAsciiDrawer = () => {
 
 	const toggleCell = (row: number, col: number) => {
 		setCells((prev) =>
-			toggleCellInCells(prev, row, col, selectedChar.char, drawMode)
+			toggleCellInCells(prev, row, col, selectedChar.char, drawMode, brushSize)
 		)
 	}
 
@@ -61,7 +62,9 @@ export const useAsciiDrawer = () => {
 				shapeEnd.col
 			)
 			if (points.length > 0) {
-				setCells((prev) => applyShapeToCells(prev, points, selectedChar.char))
+				setCells((prev) =>
+					applyShapeToCells(prev, points, selectedChar.char, brushSize)
+				)
 			}
 			setShapeStart(null)
 			setShapeEnd(null)
@@ -167,11 +170,16 @@ export const useAsciiDrawer = () => {
 				shapeEnd.col
 			)
 			if (previewPoints.length > 0) {
-				return createDisplayGrid(cells, previewPoints, selectedChar.char)
+				return createDisplayGrid(
+					cells,
+					previewPoints,
+					selectedChar.char,
+					brushSize
+				)
 			}
 		}
 		return grid
-	}, [grid, drawMode, shapeStart, shapeEnd, selectedChar, cells])
+	}, [grid, drawMode, shapeStart, shapeEnd, selectedChar, cells, brushSize])
 
 	return {
 		grid: displayGrid,
@@ -179,6 +187,8 @@ export const useAsciiDrawer = () => {
 		setDrawMode,
 		selectedChar,
 		setSelectedChar,
+		brushSize,
+		setBrushSize,
 		handleMouseDown,
 		handleMouseEnter,
 		handleMouseUp,

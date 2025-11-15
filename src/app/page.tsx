@@ -11,6 +11,8 @@ export default function Page() {
 		setDrawMode,
 		selectedChar,
 		setSelectedChar,
+		brushSize,
+		setBrushSize,
 		handleMouseDown,
 		handleMouseEnter,
 		handleMouseUp,
@@ -31,6 +33,8 @@ export default function Page() {
 				onExport={exportAscii}
 				selectedChar={selectedChar}
 				onCharChange={setSelectedChar}
+				brushSize={brushSize}
+				onBrushSizeChange={setBrushSize}
 			/>
 			<DrawingGrid
 				grid={grid}

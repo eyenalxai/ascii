@@ -16,6 +16,8 @@ type ToolbarProps = {
 	onExport: () => void
 	selectedChar: AsciiChar
 	onCharChange: (char: AsciiChar) => void
+	brushSize: number
+	onBrushSizeChange: (size: number) => void
 }
 
 export function AsciiToolbar({
@@ -24,7 +26,9 @@ export function AsciiToolbar({
 	onClear,
 	onExport,
 	selectedChar,
-	onCharChange
+	onCharChange,
+	brushSize,
+	onBrushSizeChange
 }: ToolbarProps) {
 	return (
 		<div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 p-2 max-w-md w-fit rounded-xl">
@@ -69,6 +73,53 @@ export function AsciiToolbar({
 						}
 					>
 						<Square />
+					</ToolbarButton>
+				</ToolbarGroup>
+				<ToolbarSeparator />
+				<ToolbarGroup>
+					<ToolbarButton
+						render={
+							<Button
+								variant={brushSize === 1 ? "default" : "outline"}
+								onClick={() => onBrushSizeChange(1)}
+								size="sm"
+							/>
+						}
+					>
+						1x1
+					</ToolbarButton>
+					<ToolbarButton
+						render={
+							<Button
+								variant={brushSize === 2 ? "default" : "outline"}
+								onClick={() => onBrushSizeChange(2)}
+								size="sm"
+							/>
+						}
+					>
+						2x2
+					</ToolbarButton>
+					<ToolbarButton
+						render={
+							<Button
+								variant={brushSize === 3 ? "default" : "outline"}
+								onClick={() => onBrushSizeChange(3)}
+								size="sm"
+							/>
+						}
+					>
+						3x3
+					</ToolbarButton>
+					<ToolbarButton
+						render={
+							<Button
+								variant={brushSize === 4 ? "default" : "outline"}
+								onClick={() => onBrushSizeChange(4)}
+								size="sm"
+							/>
+						}
+					>
+						4x4
 					</ToolbarButton>
 				</ToolbarGroup>
 				<ToolbarSeparator />

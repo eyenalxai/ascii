@@ -34,25 +34,39 @@ export const toggleCellInCells = (
 	row: number,
 	col: number,
 	char: string,
-	drawMode: DrawMode
+	drawMode: DrawMode,
+	brushSize: number
 ): Cell[] => {
-	return cells.map((cell) =>
-		cell.row === row && cell.col === col
+	const brushCells = getBrushCells(row, col, brushSize)
+
+	return cells.map((cell) => {
+		const isInBrush = brushCells.some(
+			(bc) => bc.row === cell.row && bc.col === cell.col
+		)
+		return isInBrush
 			? {
 					...cell,
 					char: drawMode === "draw" ? char : EMPTY_CHAR
 				}
 			: cell
-	)
+	})
 }
 
 export const applyShapeToCells = (
 	cells: Cell[],
 	points: Array<{ row: number; col: number }>,
-	char: string
+	char: string,
+	brushSize: number
 ): Cell[] => {
+	const expandedPoints: Array<{ row: number; col: number }> = []
+
+	for (const point of points) {
+		const brushCells = getBrushCells(point.row, point.col, brushSize)
+		expandedPoints.push(...brushCells)
+	}
+
 	return cells.map((cell) => {
-		const isInShape = points.some(
+		const isInShape = expandedPoints.some(
 			(p) => p.row === cell.row && p.col === cell.col
 		)
 		if (isInShape) {
@@ -76,11 +90,21 @@ export const gridToAscii = (grid: Cell[][]): string => {
 export const createDisplayGrid = (
 	cells: Cell[],
 	previewPoints: Array<{ row: number; col: number }> | null,
-	previewChar: string
+	previewChar: string,
+	brushSize: number
 ): Cell[][] => {
 	const result: Cell[][] = Array.from({ length: GRID_HEIGHT }, () => [])
+
+	const expandedPreviewPoints: Array<{ row: number; col: number }> = []
+	if (previewPoints) {
+		for (const point of previewPoints) {
+			const brushCells = getBrushCells(point.row, point.col, brushSize)
+			expandedPreviewPoints.push(...brushCells)
+		}
+	}
+
 	for (const cell of cells) {
-		const isPreview = previewPoints?.some(
+		const isPreview = expandedPreviewPoints.some(
 			(p) => p.row === cell.row && p.col === cell.col
 		)
 		result[cell.row].push({
@@ -89,4 +113,20 @@ export const createDisplayGrid = (
 		})
 	}
 	return result
+}
+
+export const getBrushCells = (
+	row: number,
+	col: number,
+	brushSize: number
+): Array<{ row: number; col: number }> => {
+	const cells: Array<{ row: number; col: number }> = []
+
+	for (let r = row; r < row + brushSize && r < GRID_HEIGHT; r++) {
+		for (let c = col; c < col + brushSize && c < GRID_WIDTH; c++) {
+			cells.push({ row: r, col: c })
+		}
+	}
+
+	return cells
 }
