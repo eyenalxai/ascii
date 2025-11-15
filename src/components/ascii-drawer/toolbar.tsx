@@ -1,4 +1,5 @@
 import { Circle, Copy, Eraser, Pencil, Square, Trash2 } from "lucide-react"
+import { BrushSizeSelector } from "@/components/ascii-drawer/brush-size-selector"
 import { CharacterSelector } from "@/components/ascii-drawer/character-selector"
 import { Button } from "@/components/ui/button"
 import {
@@ -77,50 +78,10 @@ export function AsciiToolbar({
 				</ToolbarGroup>
 				<ToolbarSeparator />
 				<ToolbarGroup>
-					<ToolbarButton
-						render={
-							<Button
-								variant={brushSize === 1 ? "default" : "outline"}
-								onClick={() => onBrushSizeChange(1)}
-								size="sm"
-							/>
-						}
-					>
-						1x1
-					</ToolbarButton>
-					<ToolbarButton
-						render={
-							<Button
-								variant={brushSize === 2 ? "default" : "outline"}
-								onClick={() => onBrushSizeChange(2)}
-								size="sm"
-							/>
-						}
-					>
-						2x2
-					</ToolbarButton>
-					<ToolbarButton
-						render={
-							<Button
-								variant={brushSize === 3 ? "default" : "outline"}
-								onClick={() => onBrushSizeChange(3)}
-								size="sm"
-							/>
-						}
-					>
-						3x3
-					</ToolbarButton>
-					<ToolbarButton
-						render={
-							<Button
-								variant={brushSize === 4 ? "default" : "outline"}
-								onClick={() => onBrushSizeChange(4)}
-								size="sm"
-							/>
-						}
-					>
-						4x4
-					</ToolbarButton>
+					<BrushSizeSelector
+						brushSize={brushSize}
+						onBrushSizeChange={onBrushSizeChange}
+					/>
 				</ToolbarGroup>
 				<ToolbarSeparator />
 				<ToolbarGroup>
