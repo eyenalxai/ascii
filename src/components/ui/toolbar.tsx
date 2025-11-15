@@ -8,9 +8,8 @@ function Toolbar({ className, ...props }: ToolbarPrimitive.Root.Props) {
   return (
     <ToolbarPrimitive.Root
       data-slot="toolbar"
-      orientation="vertical"
       className={cn(
-        "relative flex flex-col gap-2 rounded-xl border bg-card bg-clip-padding p-1 text-card-foreground",
+        "relative flex gap-2 rounded-xl border bg-card bg-clip-padding p-1 text-card-foreground",
         className
       )}
       {...props}
@@ -52,7 +51,7 @@ function ToolbarGroup({ className, ...props }: ToolbarPrimitive.Group.Props) {
   return (
     <ToolbarPrimitive.Group
       data-slot="toolbar-group"
-      className={cn("flex flex-col items-center gap-1", className)}
+      className={cn("flex items-center gap-1", className)}
       {...props}
     />
   )
