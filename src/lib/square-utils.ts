@@ -1,3 +1,4 @@
+import type { Point } from "@/lib/drawing-types"
 import { GRID_HEIGHT, GRID_WIDTH } from "@/lib/grid-utils"
 
 export const getSquarePoints = (
@@ -5,8 +6,8 @@ export const getSquarePoints = (
 	startCol: number,
 	endRow: number,
 	endCol: number
-): Array<{ row: number; col: number }> => {
-	const points: Array<{ row: number; col: number }> = []
+): Point[] => {
+	const points: Point[] = []
 	const minRow = Math.min(startRow, endRow)
 	const maxRow = Math.max(startRow, endRow)
 	const minCol = Math.min(startCol, endCol)

@@ -1,3 +1,4 @@
+import type { Point } from "@/lib/drawing-types"
 import { getEllipsePointsFromBounds } from "@/lib/ellipse-utils"
 import type { DrawMode } from "@/lib/grid-utils"
 import { getSquarePoints } from "@/lib/square-utils"
@@ -8,7 +9,7 @@ export const getShapePoints = (
 	startCol: number,
 	endRow: number,
 	endCol: number
-): Array<{ row: number; col: number }> => {
+): Point[] => {
 	if (drawMode === "ellipse") {
 		return getEllipsePointsFromBounds(startRow, startCol, endRow, endCol)
 	}

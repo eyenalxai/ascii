@@ -9,10 +9,11 @@ import {
 	ToolbarSeparator
 } from "@/components/ui/toolbar"
 import type { AsciiChar } from "@/lib/ascii-characters"
+import type { DrawMode } from "@/lib/grid-utils"
 
 type ToolbarProps = {
-	drawMode: "draw" | "erase" | "ellipse" | "square"
-	onDrawModeChange: (mode: "draw" | "erase" | "ellipse" | "square") => void
+	drawMode: DrawMode
+	onDrawModeChange: (mode: DrawMode) => void
 	onClear: () => void
 	onExport: () => void
 	selectedChar: AsciiChar

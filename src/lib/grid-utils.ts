@@ -1,3 +1,5 @@
+import type { Point } from "@/lib/drawing-types"
+
 export const GRID_WIDTH = 32
 export const GRID_HEIGHT = 16
 
@@ -55,11 +57,11 @@ export const toggleCellInCells = (
 
 export const applyShapeToCells = (
 	cells: Cell[],
-	points: Array<{ row: number; col: number }>,
+	points: Point[],
 	char: string,
 	brushSize: number
 ): Cell[] => {
-	const expandedPoints: Array<{ row: number; col: number }> = []
+	const expandedPoints: Point[] = []
 
 	for (const point of points) {
 		const brushCells = getBrushCells(point.row, point.col, brushSize)
@@ -90,15 +92,15 @@ export const gridToAscii = (grid: Cell[][]): string => {
 
 export const createDisplayGrid = (
 	cells: Cell[],
-	previewPoints: Array<{ row: number; col: number }> | null,
+	previewPoints: Point[] | null,
 	previewChar: string,
 	brushSize: number,
-	hoverCell: { row: number; col: number } | null = null,
+	hoverCell: Point | null = null,
 	hoverChar: string | null = null
 ): Cell[][] => {
 	const result: Cell[][] = Array.from({ length: GRID_HEIGHT }, () => [])
 
-	const expandedPreviewPoints: Array<{ row: number; col: number }> = []
+	const expandedPreviewPoints: Point[] = []
 	if (previewPoints) {
 		for (const point of previewPoints) {
 			const brushCells = getBrushCells(point.row, point.col, brushSize)
@@ -106,7 +108,7 @@ export const createDisplayGrid = (
 		}
 	}
 
-	const expandedHoverCells: Array<{ row: number; col: number }> = []
+	const expandedHoverCells: Point[] = []
 	if (hoverCell && hoverChar !== null) {
 		const hoverBrushCells = getBrushCells(
 			hoverCell.row,
@@ -141,8 +143,8 @@ export const getBrushCells = (
 	row: number,
 	col: number,
 	brushSize: number
-): Array<{ row: number; col: number }> => {
-	const cells: Array<{ row: number; col: number }> = []
+): Point[] => {
+	const cells: Point[] = []
 
 	for (let r = row; r < row + brushSize && r < GRID_HEIGHT; r++) {
 		for (let c = col; c < col + brushSize && c < GRID_WIDTH; c++) {

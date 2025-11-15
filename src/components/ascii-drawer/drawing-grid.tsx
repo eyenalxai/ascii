@@ -1,10 +1,4 @@
-type Cell = {
-	id: string
-	char: string
-	row: number
-	col: number
-	isHoverPreview?: boolean
-}
+import type { Cell } from "@/lib/grid-utils"
 
 type DrawingGridProps = {
 	grid: Cell[][]

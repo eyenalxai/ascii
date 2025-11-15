@@ -1,151 +1,65 @@
 import { ResultAsync } from "neverthrow"
-import { useMemo, useState } from "react"
 import { toastManager } from "@/components/ui/toast"
-import { type AsciiChar, asciiCharacters } from "@/lib/ascii-characters"
-import {
-	applyShapeToCells,
-	type Cell,
-	cellsToGrid,
-	clearCells,
-	createDisplayGrid,
-	createInitialCells,
-	type DrawMode,
-	EMPTY_CHAR,
-	gridToAscii,
-	toggleCellInCells
-} from "@/lib/grid-utils"
-import { getShapePoints } from "@/lib/shape-utils"
+import { useDrawingInteraction } from "@/hooks/use-drawing-interaction"
+import { useDrawingTools } from "@/hooks/use-drawing-tools"
+import { useGridDisplay } from "@/hooks/use-grid-display"
+import { useGridState } from "@/hooks/use-grid-state"
+import { useShapeDrawing } from "@/hooks/use-shape-drawing"
+import { EMPTY_CHAR, gridToAscii } from "@/lib/grid-utils"
 
 export const useAsciiDrawer = () => {
-	const [cells, setCells] = useState<Cell[]>(createInitialCells())
-	const [isDrawing, setIsDrawing] = useState(false)
-	const [drawMode, setDrawMode] = useState<DrawMode>("draw")
-	const [selectedChar, setSelectedChar] = useState<AsciiChar>(
-		asciiCharacters[0]
-	)
-	const [brushSize, setBrushSize] = useState<number>(1)
-	const [hoveredCell, setHoveredCell] = useState<{
-		row: number
-		col: number
-	} | null>(null)
-	const [shapeStart, setShapeStart] = useState<{
-		row: number
-		col: number
-	} | null>(null)
-	const [shapeEnd, setShapeEnd] = useState<{
-		row: number
-		col: number
-	} | null>(null)
+	const { cells, grid, updateCells, clearCells } = useGridState()
 
-	const grid = useMemo(() => cellsToGrid(cells), [cells])
+	const {
+		drawMode,
+		setDrawMode,
+		selectedChar,
+		setSelectedChar,
+		brushSize,
+		setBrushSize
+	} = useDrawingTools()
 
-	const toggleCell = (row: number, col: number) => {
-		setCells((prev) =>
-			toggleCellInCells(prev, row, col, selectedChar.char, drawMode, brushSize)
-		)
-	}
+	const { startShape, updateShapeEnd, finishShape, getShapePreviewPoints } =
+		useShapeDrawing({
+			updateCells,
+			drawMode,
+			char: selectedChar.char,
+			brushSize
+		})
 
-	const startShapeDrawing = (row: number, col: number) => {
-		setIsDrawing(true)
-		setShapeStart({ row, col })
-		setShapeEnd({ row, col })
-	}
+	const {
+		isDrawing,
+		hoveredCell,
+		handleMouseDown,
+		handleMouseEnter,
+		handleMouseLeave,
+		handleMouseUp,
+		handleTouchStart,
+		handleTouchMove,
+		handleTouchEnd
+	} = useDrawingInteraction({
+		updateCells,
+		drawMode,
+		selectedChar: selectedChar.char,
+		brushSize,
+		startShape,
+		updateShapeEnd,
+		finishShape
+	})
 
-	const startFreeDrawing = (row: number, col: number) => {
-		setIsDrawing(true)
-		toggleCell(row, col)
-	}
-
-	const finishShapeDrawing = () => {
-		if (shapeStart && shapeEnd) {
-			const points = getShapePoints(
-				drawMode,
-				shapeStart.row,
-				shapeStart.col,
-				shapeEnd.row,
-				shapeEnd.col
-			)
-			if (points.length > 0) {
-				setCells((prev) =>
-					applyShapeToCells(prev, points, selectedChar.char, brushSize)
-				)
-			}
-			setShapeStart(null)
-			setShapeEnd(null)
-		}
-		setIsDrawing(false)
-	}
-
-	const handleMouseDown = (row: number, col: number) => {
-		if (drawMode === "ellipse" || drawMode === "square") {
-			startShapeDrawing(row, col)
-		} else {
-			startFreeDrawing(row, col)
-		}
-	}
-
-	const handleMouseEnter = (row: number, col: number) => {
-		if (!isDrawing) {
-			setHoveredCell({ row, col })
-			return
-		}
-
-		if ((drawMode === "ellipse" || drawMode === "square") && shapeStart) {
-			setShapeEnd({ row, col })
-		} else if (drawMode !== "ellipse" && drawMode !== "square") {
-			setHoveredCell({ row, col })
-			toggleCell(row, col)
-		}
-	}
-
-	const handleMouseLeave = () => {
-		setHoveredCell(null)
-	}
-
-	const handleMouseUp = () => {
-		finishShapeDrawing()
-	}
-
-	const handleTouchStart = (e: React.TouchEvent, row: number, col: number) => {
-		e.preventDefault()
-		if (drawMode === "ellipse" || drawMode === "square") {
-			startShapeDrawing(row, col)
-		} else {
-			startFreeDrawing(row, col)
-		}
-	}
-
-	const handleTouchMove = (e: React.TouchEvent) => {
-		if (!isDrawing) return
-
-		e.preventDefault()
-
-		const touch = e.touches[0]
-		const element = document.elementFromPoint(touch.clientX, touch.clientY)
-
-		if (element instanceof HTMLButtonElement) {
-			const rowAttr = element.dataset.row
-			const colAttr = element.dataset.col
-
-			if (rowAttr !== undefined && colAttr !== undefined) {
-				const row = Number.parseInt(rowAttr, 10)
-				const col = Number.parseInt(colAttr, 10)
-
-				if ((drawMode === "ellipse" || drawMode === "square") && shapeStart) {
-					setShapeEnd({ row, col })
-				} else if (drawMode !== "ellipse" && drawMode !== "square") {
-					toggleCell(row, col)
-				}
-			}
-		}
-	}
-
-	const handleTouchEnd = () => {
-		finishShapeDrawing()
-	}
+	const displayGrid = useGridDisplay({
+		cells,
+		grid,
+		hoveredCell,
+		isDrawing,
+		shapePreviewPoints: getShapePreviewPoints(),
+		drawMode,
+		selectedChar: selectedChar.char,
+		brushSize
+	})
 
 	const clearGrid = () => {
-		setCells((prev) => clearCells(prev))
+		clearCells()
 	}
 
 	const exportAscii = () => {
@@ -171,57 +85,6 @@ export const useAsciiDrawer = () => {
 			})
 		})
 	}
-
-	const displayGrid = useMemo(() => {
-		const hoverChar = drawMode === "erase" ? EMPTY_CHAR : selectedChar.char
-		const shouldShowHover = Boolean(
-			hoveredCell &&
-				!(isDrawing && (drawMode === "ellipse" || drawMode === "square"))
-		)
-
-		if (shapeStart && shapeEnd) {
-			const previewPoints = getShapePoints(
-				drawMode,
-				shapeStart.row,
-				shapeStart.col,
-				shapeEnd.row,
-				shapeEnd.col
-			)
-			if (previewPoints.length > 0) {
-				return createDisplayGrid(
-					cells,
-					previewPoints,
-					selectedChar.char,
-					brushSize,
-					shouldShowHover ? hoveredCell : null,
-					shouldShowHover ? hoverChar : null
-				)
-			}
-		}
-
-		if (shouldShowHover) {
-			return createDisplayGrid(
-				cells,
-				null,
-				selectedChar.char,
-				brushSize,
-				hoveredCell,
-				hoverChar
-			)
-		}
-
-		return grid
-	}, [
-		grid,
-		drawMode,
-		shapeStart,
-		shapeEnd,
-		selectedChar,
-		cells,
-		brushSize,
-		isDrawing,
-		hoveredCell
-	])
 
 	return {
 		grid: displayGrid,

@@ -1,3 +1,4 @@
+import type { Point } from "@/lib/drawing-types"
 import { GRID_HEIGHT, GRID_WIDTH } from "@/lib/grid-utils"
 
 export const getEllipsePointsFromBounds = (
@@ -5,7 +6,7 @@ export const getEllipsePointsFromBounds = (
 	startCol: number,
 	endRow: number,
 	endCol: number
-): Array<{ row: number; col: number }> => {
+): Point[] => {
 	const pointSet = new Set<string>()
 
 	const minRow = Math.min(startRow, endRow)
