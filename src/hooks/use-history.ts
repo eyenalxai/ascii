@@ -32,7 +32,8 @@ export const useHistory = <T>(initialState: T) => {
 		setHistory((prev) => {
 			if (prev.past.length === 0) return prev
 
-			const previous = prev.past[prev.past.length - 1]
+			const previous = prev.past.at(-1)
+			if (previous === undefined) return prev
 			const newPast = prev.past.slice(0, -1)
 
 			return {
@@ -48,6 +49,7 @@ export const useHistory = <T>(initialState: T) => {
 			if (prev.future.length === 0) return prev
 
 			const next = prev.future[0]
+			if (next === undefined) return prev
 			const newFuture = prev.future.slice(1)
 
 			return {
@@ -71,4 +73,3 @@ export const useHistory = <T>(initialState: T) => {
 		canRedo
 	}
 }
-
