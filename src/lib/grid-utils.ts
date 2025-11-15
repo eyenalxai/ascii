@@ -11,7 +11,7 @@ export type Cell = {
 	isHoverPreview?: boolean
 }
 
-export type DrawMode = "draw" | "erase" | "ellipse" | "square"
+export type DrawMode = "draw" | "erase" | "ellipse" | "square" | "move"
 
 export const EMPTY_CHAR = "\u2007"
 
@@ -149,4 +149,34 @@ export const getBrushCells = (
 	}
 
 	return cells
+}
+
+export const moveCells = (
+	cells: Cell[],
+	deltaRow: number,
+	deltaCol: number
+): Cell[] => {
+	const newCells = createInitialCells()
+
+	for (const cell of cells) {
+		if (cell.char !== EMPTY_CHAR) {
+			const newRow = cell.row + deltaRow
+			const newCol = cell.col + deltaCol
+
+			if (
+				newRow >= 0 &&
+				newRow < GRID_HEIGHT &&
+				newCol >= 0 &&
+				newCol < GRID_WIDTH
+			) {
+				const newIndex = newRow * GRID_WIDTH + newCol
+				newCells[newIndex] = {
+					...newCells[newIndex],
+					char: cell.char
+				}
+			}
+		}
+	}
+
+	return newCells
 }

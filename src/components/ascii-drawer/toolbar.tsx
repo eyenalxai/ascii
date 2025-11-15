@@ -2,6 +2,7 @@ import {
 	Circle,
 	Copy,
 	Eraser,
+	Move,
 	Pencil,
 	Redo,
 	Settings,
@@ -119,6 +120,13 @@ export function AsciiToolbar({
 				</PopoverTrigger>
 				<PopoverPopup className="flex flex-col mt-1">
 					<div className="flex flex-col items-center gap-2 pb-2">
+						<Button
+							variant={drawMode === "move" ? "default" : "outline"}
+							onClick={() => onDrawModeChange("move")}
+							className="size-8"
+						>
+							<Move />
+						</Button>
 						<Button
 							variant={drawMode === "ellipse" ? "default" : "outline"}
 							onClick={() => onDrawModeChange("ellipse")}

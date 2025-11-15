@@ -2,7 +2,7 @@ import { useState } from "react"
 import { isShapeMode } from "@/lib/drawing-helpers"
 import type { Point } from "@/lib/drawing-types"
 import type { Cell, DrawMode } from "@/lib/grid-utils"
-import { toggleCellInCells } from "@/lib/grid-utils"
+import { moveCells, toggleCellInCells } from "@/lib/grid-utils"
 
 type UseDrawingInteractionProps = {
 	updateCells: (updater: (prevCells: Cell[]) => Cell[]) => void
@@ -27,6 +27,8 @@ export const useDrawingInteraction = ({
 }: UseDrawingInteractionProps) => {
 	const [isDrawing, setIsDrawing] = useState(false)
 	const [hoveredCell, setHoveredCell] = useState<Point | null>(null)
+	const [moveStartPoint, setMoveStartPoint] = useState<Point | null>(null)
+	const [originalCells, setOriginalCells] = useState<Cell[] | null>(null)
 
 	const toggleCell = (row: number, col: number) => {
 		updateCells((prev) =>
@@ -39,6 +41,12 @@ export const useDrawingInteraction = ({
 		setIsDrawing(true)
 		if (isShapeMode(drawMode)) {
 			startShape({ row, col })
+		} else if (drawMode === "move") {
+			setMoveStartPoint({ row, col })
+			updateCells((prev) => {
+				setOriginalCells(prev)
+				return prev
+			})
 		} else {
 			toggleCell(row, col)
 		}
@@ -52,6 +60,12 @@ export const useDrawingInteraction = ({
 
 		if (isShapeMode(drawMode)) {
 			updateShapeEnd({ row, col })
+		} else if (drawMode === "move") {
+			if (moveStartPoint && originalCells) {
+				const deltaRow = row - moveStartPoint.row
+				const deltaCol = col - moveStartPoint.col
+				updateCells(() => moveCells(originalCells, deltaRow, deltaCol))
+			}
 		} else {
 			setHoveredCell({ row, col })
 			toggleCell(row, col)
@@ -65,6 +79,9 @@ export const useDrawingInteraction = ({
 	const handleMouseUp = () => {
 		if (isShapeMode(drawMode)) {
 			finishShape()
+		} else if (drawMode === "move") {
+			setMoveStartPoint(null)
+			setOriginalCells(null)
 		}
 		setIsDrawing(false)
 	}
@@ -75,6 +92,12 @@ export const useDrawingInteraction = ({
 		setIsDrawing(true)
 		if (isShapeMode(drawMode)) {
 			startShape({ row, col })
+		} else if (drawMode === "move") {
+			setMoveStartPoint({ row, col })
+			updateCells((prev) => {
+				setOriginalCells(prev)
+				return prev
+			})
 		} else {
 			toggleCell(row, col)
 		}
@@ -98,6 +121,12 @@ export const useDrawingInteraction = ({
 
 				if (isShapeMode(drawMode)) {
 					updateShapeEnd({ row, col })
+				} else if (drawMode === "move") {
+					if (moveStartPoint && originalCells) {
+						const deltaRow = row - moveStartPoint.row
+						const deltaCol = col - moveStartPoint.col
+						updateCells(() => moveCells(originalCells, deltaRow, deltaCol))
+					}
 				} else {
 					toggleCell(row, col)
 				}
@@ -108,6 +137,9 @@ export const useDrawingInteraction = ({
 	const handleTouchEnd = () => {
 		if (isShapeMode(drawMode)) {
 			finishShape()
+		} else if (drawMode === "move") {
+			setMoveStartPoint(null)
+			setOriginalCells(null)
 		}
 		setIsDrawing(false)
 	}
