@@ -117,7 +117,7 @@ export function AsciiToolbar({
 				<PopoverTrigger render={<Button variant="outline" />}>
 					<Settings />
 				</PopoverTrigger>
-				<PopoverPopup className="flex flex-col">
+				<PopoverPopup className="flex flex-col mt-1">
 					<div className="flex flex-col items-center gap-2 pb-2">
 						<Button
 							variant={drawMode === "ellipse" ? "default" : "outline"}
