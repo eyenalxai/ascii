@@ -50,7 +50,7 @@ export function DrawingGrid({
 								cell.isHoverPreview === true
 									? "bg-muted/50 text-foreground/70"
 									: cell.char === emptyChar
-										? `bg-background ${drawMode !== "move" ? "hover:bg-muted" : ""}`
+										? `bg-background ${drawMode === "move" ? "" : "hover:bg-muted"}`
 										: "bg-background text-foreground"
 							} ${drawMode === "move" ? "cursor-move" : ""}`}
 							data-row={cell.row}
