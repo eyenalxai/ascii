@@ -7,7 +7,6 @@ import {
 	PopoverContent,
 	PopoverTrigger
 } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
 
 type BrushSizeSelectorProps = {
 	brushSize: number
@@ -29,25 +28,20 @@ export function BrushSizeSelector({
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger render={<Button variant="outline" />}>
+			<PopoverTrigger render={<Button variant="outline" className="w-13" />}>
 				{brushSize}x{brushSize}
 			</PopoverTrigger>
-			<PopoverContent className="w-fit p-2" align="center">
-				<div className="grid grid-cols-2 gap-2">
+			<PopoverContent className="w-fit" align="center">
+				<div className="flex flex-col gap-2">
 					{BRUSH_SIZES.map((size) => (
-						<button
+						<Button
 							key={size}
 							type="button"
 							onClick={() => handleSizeSelect(size)}
-							className={cn(
-								"aspect-square rounded-md border px-4 py-2 flex items-center justify-center text-sm font-medium",
-								brushSize === size
-									? "bg-primary text-primary-foreground border-primary"
-									: "border-border bg-background hover:bg-accent"
-							)}
+							variant={brushSize === size ? "default" : "outline"}
 						>
 							{size}x{size}
-						</button>
+						</Button>
 					))}
 				</div>
 			</PopoverContent>
