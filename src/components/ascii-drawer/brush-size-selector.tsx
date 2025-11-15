@@ -26,7 +26,7 @@ const SizeGrid = ({ size }: { size: number }) => {
 					{cols.map((colIndex) => (
 						<div
 							key={`row-${rowIndex}-col-${colIndex}`}
-							className="w-[3px] h-[3px] bg-current"
+							className="w-[3px] h-[3px] bg-current rounded"
 						/>
 					))}
 				</div>
